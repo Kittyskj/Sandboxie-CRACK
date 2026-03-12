@@ -10,7 +10,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- *
+ *a
  * You should have received a copy of the GNU General Public License
  * along with Process Hacker.  If not, see <http://www.gnu.org/licenses/>.
  */
@@ -21,11 +21,11 @@ typedef union _SCertInfo {
     unsigned long long State;
     struct {
         unsigned long
-            active      : 1,    // certificate is active
-            expired     : 1,    // certificate is expired but may be active
-            outdated    : 1,    // certificate is expired, not anymore valid for the current build
-            reservd_1   : 2,    // DEPRECATED
-            grace_period: 1,    // the certificate is expired and or outdated but we keep it valid for 1 extra month to allof wor a seamless renewal
+            active      : 1,
+            expired     : 1,
+            outdated    : 1,
+            reservd_1   : 2,
+            grace_period: 1,
             locked      : 1,
             lock_req    : 1,
 
@@ -34,15 +34,11 @@ typedef union _SCertInfo {
 
             reservd_3   : 8,
 
-            reservd_4   : 4,    // More features
-            opt_desk    : 1,    // Isolated Sandboxie Desktops:             "UseSandboxDesktop"
-            opt_net     : 1,    // Advanced Network features:               "NetworkDnsFilter", "NetworkUseProxy".
-            opt_enc     : 1,    // Box Encryption and Box Protection:       "ConfidentialBox", "UseFileImage", "EnableEFS".
-            opt_sec     : 1;    // Various security enhanced box types:   "UseSecurityMode", "SysCallLockDown", "RestrictDevices", "UseRuleSpecificity", "UsePrivacyMode", "ProtectHostImages",
-                                // as well as reduced isolation box type:   "NoSecurityIsolation".
-                                
-                                // Other features, available with any cert: "UseRamDisk", "ForceUsbDrives",
-                                // as well as Automatic Updates, etc....
+            reservd_4   : 4,
+            opt_desk    : 1,
+            opt_net     : 1,
+            opt_enc     : 1,
+            opt_sec     : 1;
 
         long expirers_in_sec;
     };
@@ -50,37 +46,16 @@ typedef union _SCertInfo {
 
 enum ECertType {
     eCertNoType         = 0b00000,
-
     eCertEternal        = 0b00100,
     eCertContributor    = 0b00101,
-//  eCert               = 0b00110,
-//  eCert               = 0b00111,
-            
     eCertBusiness       = 0b01000,
-//  eCert               = 0b01001,
-//  eCert               = 0b01010,
-//  eCert               = 0b01011,
-
     eCertPersonal       = 0b01100,
-//  eCert               = 0b01101, 
-//  eCert               = 0b01110,
-//  eCert               = 0b01111,
-
     eCertHome           = 0b10000,
     eCertFamily         = 0b10001, 
-//  eCert               = 0b10010,
-//  eCert               = 0b10011,
-            
     eCertDeveloper      = 0b10100,
-//  eCert               = 0b10101, 
-//  eCert               = 0b10110,
-//  eCert               = 0b10111,
-
     eCertPatreon        = 0b11000,
     eCertGreatPatreon   = 0b11001,
     eCertEntryPatreon   = 0b11010,
-//  eCert               = 0b11011,
-
     eCertEvaluation     = 0b11100
 };
         
@@ -95,11 +70,10 @@ enum ECertLevel {
 
 #define CERT_IS_TYPE(cert,t)        ((cert.type & 0b11100) == (unsigned long)(t))
 #define CERT_IS_SUBSCRIPTION(cert)  (CERT_IS_TYPE(cert, eCertBusiness) || CERT_IS_TYPE(cert, eCertHome) || cert.type == eCertEntryPatreon || CERT_IS_TYPE(cert, eCertEvaluation))
-#define CERT_IS_INSIDER(cert)		(CERT_IS_TYPE(cert, eCertEternal) || cert.type == eCertGreatPatreon || cert.type == eCertDeveloper)
-//#define CERT_IS_LEVEL(cert,l)       (cert.active && cert.level >= (unsigned long)(l))
+#define CERT_IS_INSIDER(cert)       (1)
 
 #ifdef KERNEL_MODE
 extern SCertInfo Verify_CertInfo;
-NTSTATUS KphVerifyBuffer(PUCHAR Buffer, ULONG BufferSize, PUCHAR Signature, ULONG SignatureSize);
-NTSTATUS KphVerifyCurrentProcess();
+NTSTATUS KphVerifyBuffer(PUCHAR Buffer, ULONG BufferSize, PUCHAR Signature, ULONG SignatureSize) { return 0; }
+NTSTATUS KphVerifyCurrentProcess() { return 0; }
 #endif
