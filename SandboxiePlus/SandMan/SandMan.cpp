@@ -3130,6 +3130,7 @@ void CSandMan::OnMenuHover(QAction* action)
 
 void CSandMan::CheckSupport()
 {
+	return; // CRACK: No support reminders
 	if (CSupportDialog::CheckSupport())
 		return;
 
@@ -3468,6 +3469,7 @@ bool CSandMan::SetCertificate(const QByteArray& Certificate)
 
 bool CSandMan::CheckCertificate(QWidget* pWidget, int iType)
 {
+	return true; // CRACK: All features available
 	QString Message;
 	if (iType == 1 || iType == 2)
 	{
@@ -3517,6 +3519,20 @@ SB_STATUS CSandMan::ReloadCert(QWidget* pWidget)
 	SB_STATUS Status = theAPI->ReloadCert();
 
 	theAPI->GetDriverInfo(-1, &g_CertInfo.State, sizeof(g_CertInfo.State));
+
+	// --- CRACK: Force active cert state in GUI ---
+	g_CertInfo.active = 1;
+	g_CertInfo.expired = 0;
+	g_CertInfo.outdated = 0;
+	g_CertInfo.grace_period = 0;
+	g_CertInfo.type = eCertEternal;
+	g_CertInfo.level = eCertMaxLevel;
+	g_CertInfo.opt_sec = 1;
+	g_CertInfo.opt_enc = 1;
+	g_CertInfo.opt_net = 1;
+	g_CertInfo.opt_desk = 1;
+	g_CertInfo.expirers_in_sec = 3600 * 24 * 3650; // 10 years
+	// --- END CRACK ---
 
 	if (!Status.IsError())
 	{
