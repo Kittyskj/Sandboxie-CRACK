@@ -3186,6 +3186,19 @@ void CSettingsWindow::LoadCertificate(QString CertPath)
 		g_Certificate = CertFile.readAll();
 		CertFile.close();
 	}
+
+	// --- CRACK: Force cert info even without file ---
+	g_CertInfo.active = 1;
+	g_CertInfo.type = eCertEternal;
+	g_CertInfo.level = eCertMaxLevel;
+	g_CertInfo.opt_sec = 1;
+	g_CertInfo.opt_enc = 1;
+	g_CertInfo.opt_net = 1;
+	g_CertInfo.opt_desk = 1;
+	g_CertInfo.expired = 0;
+	g_CertInfo.outdated = 0;
+	g_CertInfo.expirers_in_sec = 3600 * 24 * 3650; // 10 years
+	// --- END CRACK ---
 }
 
 
